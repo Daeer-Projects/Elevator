@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Direction.cs" />
+    <Compile Include="ElevatorControls.cs" />
+    <Compile Include="ElevatorStatus.cs" />
     <Compile Include="IElevatorControls.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="IElevatorStatus.cs" />

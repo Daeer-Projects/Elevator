@@ -50,6 +50,8 @@ namespace ElevatorRunner
 			//See https://github.com/ninject/Ninject/wiki/Dependency-Injection-With-Ninject for help
 			//Hint: You may need to use Bind<A, B>() depending on your implementation
 			//Hint: You may need .InSingletonScope()
+			kernel.Bind<IElevatorControls>().To<ElevatorControls>();
+			kernel.Bind<IElevatorStatus>().To<ElevatorStatus>();
 
 			elevatorStatus = kernel.Get<IElevatorStatus>();
 			elevatorControls = kernel.Get<IElevatorControls>();
