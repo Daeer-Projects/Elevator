@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Easy.MessageHub;
 using Interfaces;
+using Interfaces.Messages;
 using Ninject;
 
 namespace ElevatorRunner
@@ -12,6 +14,7 @@ namespace ElevatorRunner
 		private static Floor currentFloor;
 		private static IElevatorStatus elevatorStatus;
 		private static IElevatorControls elevatorControls;
+		private static IMessageHub messageHub;
 		private static readonly List<Person> People = new List<Person>();
 
 		static void Main()
@@ -50,13 +53,15 @@ namespace ElevatorRunner
 			//See https://github.com/ninject/Ninject/wiki/Dependency-Injection-With-Ninject for help
 			//Hint: You may need to use Bind<A, B>() depending on your implementation
 			//Hint: You may need .InSingletonScope()
-			kernel.Bind<IElevatorControls>().To<ElevatorControls>();
-			kernel.Bind<IElevatorStatus>().To<ElevatorStatus>();
+			kernel.Bind<IMessageHub>().To<MessageHub>().InSingletonScope();
+			kernel.Bind<IElevatorStatus>().To<ElevatorStatus>().InSingletonScope();
+			kernel.Bind<IElevatorControls>().To<ElevatorControls>().InSingletonScope();
 
+			messageHub = kernel.Get<IMessageHub>();
 			elevatorStatus = kernel.Get<IElevatorStatus>();
 			elevatorControls = kernel.Get<IElevatorControls>();
 
-			elevatorStatus.FloorChanged += ElevatorStatusOnFloorChanged;
+			messageHub.Subscribe<FloorChangedMessage>(ElevatorStatusOnFloorChanged);
 		}
 
 		private static void DrawInitialState()
@@ -82,15 +87,15 @@ namespace ElevatorRunner
 			Console.SetCursorPosition(0, 14);
 		}
 
-		private static void ElevatorStatusOnFloorChanged(Floor floor, Direction direction)
+		private static void ElevatorStatusOnFloorChanged(FloorChangedMessage message)
 		{
 			ClearFloor((int)currentFloor);
-			currentFloor = floor;
+			currentFloor = message.Floor;
 			DrawElevatorAtFloor((int)currentFloor);
 
-			CheckForPeopleEnteringElevator(floor, direction);
+			CheckForPeopleEnteringElevator(message.Floor, message.Direction);
 
-			CheckForPeopleLeavingElevator(floor);
+			CheckForPeopleLeavingElevator(message.Floor);
 		}
 
 		private static void CheckForPeopleLeavingElevator(Floor floor)
