@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Interfaces.Extensions;
 
 namespace Interfaces
@@ -35,26 +36,11 @@ namespace Interfaces
 
 		public void MoveToNextFloor()
 		{
-			if (CurrentDirection == Direction.None)
-			{
-				if (_callQueue.Any())
-				{
-					_callQueue.OrderBy(c => c);
-					var firstFloor = _callQueue.First();
-					CurrentDirection = CurrentFloor > firstFloor ? Direction.Down : Direction.Up;
-				}
-			}
+			SetCurrentDirectionIfAnyCalls();
 			
 			_mainQueue = _callQueue.OrganiseQueue(_destinationQueue, CurrentFloor, CurrentDirection);
-			var anyToRemove = _mainQueue.Any(q => q == CurrentFloor);
-			if (anyToRemove)
-			{
-				while (_mainQueue.Any(q => q == CurrentFloor))
-				{
-					_mainQueue.Dequeue();
-				}
-			}
-			
+			RemoveCallsOnCurrentFloor();
+
 			switch (CurrentDirection)
 			{
 				case Direction.Up:
@@ -87,22 +73,34 @@ namespace Interfaces
 					}
 				default:
 					{
-						//var anyCallsAbove = _mainQueue.Any(m => m > CurrentFloor);
-						//var anyCallsBelow = _mainQueue.Any(m => m < CurrentFloor);
-						//if (anyCallsAbove)
-						//{
-						//	CurrentDirection = Direction.Up;
-						//}
-						//else
-						//{
-						//	if (anyCallsBelow)
-						//	{
-						//		CurrentDirection = Direction.Down;
-						//	}
-						//}
 						CurrentFloor = CurrentFloor;
 						break;
 					}
+			}
+		}
+
+		private void RemoveCallsOnCurrentFloor()
+		{
+			var anyToRemove = _mainQueue.Any(q => q == CurrentFloor);
+			if (anyToRemove)
+			{
+				while (_mainQueue.Any(q => q == CurrentFloor))
+				{
+					_mainQueue.Dequeue();
+				}
+			}
+		}
+
+		private void SetCurrentDirectionIfAnyCalls()
+		{
+			if (CurrentDirection == Direction.None)
+			{
+				if (_callQueue.Any())
+				{
+					_callQueue.OrderBy(c => c);
+					var firstFloor = _callQueue.First();
+					CurrentDirection = CurrentFloor > firstFloor ? Direction.Down : Direction.Up;
+				}
 			}
 		}
 	}

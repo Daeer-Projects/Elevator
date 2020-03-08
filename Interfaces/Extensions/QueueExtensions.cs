@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Interfaces.Extensions
 {
@@ -17,16 +16,7 @@ namespace Interfaces.Extensions
 
 			if (direction == Direction.Up)
 			{
-				// The queue needs to be in ascending order.
-				var aboveCall = callQueue.Where(c => c > currentFloor).Select(c => c);
-				var aboveDest = destinationQueue.Where(d => d > currentFloor).Select(d => d);
-				var belowCall = callQueue.Where(c => c < currentFloor).Select(c => c);
-				var belowDest = destinationQueue.Where(d => d < currentFloor).Select(d => d);
-
-				tempAscList.AddRange(aboveCall);
-				tempAscList.AddRange(aboveDest);
-				tempDescList.AddRange(belowCall);
-				tempDescList.AddRange(belowDest);
+				PopulateTempLists(callQueue, destinationQueue, currentFloor, tempAscList, tempDescList);
 
 				var ascendingList = tempAscList.OrderBy(x => x).ToList();
 				var descendingList = tempDescList.OrderByDescending(x => x).ToList();
@@ -37,16 +27,7 @@ namespace Interfaces.Extensions
 			}
 			else
 			{
-				// The queue needs to be in ascending order.
-				var aboveCall = callQueue.Where(c => c > currentFloor).Select(c => c);
-				var aboveDest = destinationQueue.Where(d => d > currentFloor).Select(d => d);
-				var belowCall = callQueue.Where(c => c < currentFloor).Select(c => c);
-				var belowDest = destinationQueue.Where(d => d < currentFloor).Select(d => d);
-
-				tempAscList.AddRange(aboveCall);
-				tempAscList.AddRange(aboveDest);
-				tempDescList.AddRange(belowCall);
-				tempDescList.AddRange(belowDest);
+				PopulateTempLists(callQueue, destinationQueue, currentFloor, tempAscList, tempDescList);
 
 				var ascendingList = tempAscList.OrderBy(x => x).ToList();
 				var descendingList = tempDescList.OrderByDescending(x => x).ToList();
@@ -56,9 +37,24 @@ namespace Interfaces.Extensions
 				result = new Queue<Floor>(descendingList);
 			}
 
-
-
 			return result;
+		}
+
+		private static void PopulateTempLists(Queue<Floor> callQueue,
+			Queue<Floor> destinationQueue,
+			Floor currentFloor,
+			List<Floor> tempAscList,
+			List<Floor> tempDescList)
+		{
+			var aboveCall = callQueue.Where(c => c > currentFloor).Select(c => c);
+			var aboveDest = destinationQueue.Where(d => d > currentFloor).Select(d => d);
+			var belowCall = callQueue.Where(c => c < currentFloor).Select(c => c);
+			var belowDest = destinationQueue.Where(d => d < currentFloor).Select(d => d);
+
+			tempAscList.AddRange(aboveCall);
+			tempAscList.AddRange(aboveDest);
+			tempDescList.AddRange(belowCall);
+			tempDescList.AddRange(belowDest);
 		}
 	}
 }

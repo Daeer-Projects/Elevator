@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using FluentAssertions;
 using Interfaces.Extensions;
 using Xunit;
@@ -32,7 +33,7 @@ namespace Interfaces.Tests.Extensions
 		}
 
 		[Fact]
-		public void Test_organise_with_call_queue_empty_destination_queue_twelth_floor_going_down_returns_expected()
+		public void Test_organise_with_call_queue_empty_destination_queue_twelfth_floor_going_down_returns_expected()
 		{
 			// Arrange.
 			var expectedQueue = new Queue<Floor>();
@@ -84,7 +85,7 @@ namespace Interfaces.Tests.Extensions
 		}
 
 		[Fact]
-		public void Test_organise_with_call_queue_destination_queue_twelth_floor_going_down_returns_expected()
+		public void Test_organise_with_call_queue_destination_queue_twelfth_floor_going_down_returns_expected()
 		{
 			// Arrange.
 			var expectedQueue = new Queue<Floor>();

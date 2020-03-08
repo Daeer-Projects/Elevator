@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Easy.MessageHub;
 using Interfaces;
 using Interfaces.Messages;
@@ -12,7 +13,6 @@ namespace ElevatorRunner
 	class Program
 	{
 		private static Floor currentFloor;
-		private static IElevatorStatus elevatorStatus;
 		private static IElevatorControls elevatorControls;
 		private static IMessageHub messageHub;
 		private static readonly List<Person> People = new List<Person>();
@@ -63,7 +63,6 @@ namespace ElevatorRunner
 			kernel.Bind<IElevatorControls>().To<ElevatorControls>().InSingletonScope();
 
 			messageHub = kernel.Get<IMessageHub>();
-			elevatorStatus = kernel.Get<IElevatorStatus>();
 			elevatorControls = kernel.Get<IElevatorControls>();
 
 			messageHub.Subscribe<FloorChangedMessage>(ElevatorStatusOnFloorChanged);
