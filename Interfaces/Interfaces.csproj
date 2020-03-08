@@ -47,15 +47,16 @@
     <Compile Include="Direction.cs" />
     <Compile Include="ElevatorControls.cs" />
     <Compile Include="ElevatorStatus.cs" />
+    <Compile Include="Extensions\QueueExtensions.cs" />
     <Compile Include="IElevatorControls.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="IElevatorStatus.cs" />
     <Compile Include="Messages\FloorChangedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

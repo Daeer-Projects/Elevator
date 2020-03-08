@@ -24,10 +24,15 @@ namespace ElevatorRunner
 			DrawInitialState();
 
 			//some sample calls here. Feel free to add more
-			People.Add(new Person { StartingFloor = Floor.Four, Destination = Floor.Twelve, DelayInSeconds = 0});
-			People.Add(new Person { StartingFloor = Floor.Eight, Destination = Floor.Eleven, DelayInSeconds = 10});
+			People.Add(new Person { StartingFloor = Floor.Four, Destination = Floor.Twelve, DelayInSeconds = 0 });
+			People.Add(new Person { StartingFloor = Floor.Eight, Destination = Floor.Eleven, DelayInSeconds = 10 });
 			People.Add(new Person { StartingFloor = Floor.Ground, Destination = Floor.Twelve, DelayInSeconds = 15 });
 			People.Add(new Person { StartingFloor = Floor.Eight, Destination = Floor.Ground, DelayInSeconds = 10 });
+
+			//People.Add(new Person { StartingFloor = Floor.Two, Destination = Floor.Five, DelayInSeconds = 15 });
+			//People.Add(new Person { StartingFloor = Floor.Eight, Destination = Floor.Ten, DelayInSeconds = 20 });
+			//People.Add(new Person { StartingFloor = Floor.Ground, Destination = Floor.Nine, DelayInSeconds = 13 });
+			//People.Add(new Person { StartingFloor = Floor.Eight, Destination = Floor.Ground, DelayInSeconds = 13 });
 
 			TestElevator();
 

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElevatorRunner", "ElevatorR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{32026B4F-A247-453B-B915-8A37DBE14BEF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces.Tests", "Interfaces.Tests\Interfaces.Tests.csproj", "{22FA84D7-783D-41E9-9B90-A0D1ED8C1ABF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{32026B4F-A247-453B-B915-8A37DBE14BEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32026B4F-A247-453B-B915-8A37DBE14BEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32026B4F-A247-453B-B915-8A37DBE14BEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22FA84D7-783D-41E9-9B90-A0D1ED8C1ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22FA84D7-783D-41E9-9B90-A0D1ED8C1ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22FA84D7-783D-41E9-9B90-A0D1ED8C1ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22FA84D7-783D-41E9-9B90-A0D1ED8C1ABF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

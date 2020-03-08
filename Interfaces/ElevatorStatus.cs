@@ -1,62 +1,108 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
+using Interfaces.Extensions;
 
 namespace Interfaces
 {
 	public class ElevatorStatus : IElevatorStatus
 	{
-		private readonly Dictionary<int, Floor> _floorQueue;
+		private readonly Queue<Floor> _callQueue;
+		private readonly Queue<Floor> _destinationQueue;
+
+		private Queue<Floor> _mainQueue;
 
 		public ElevatorStatus()
 		{
-			_floorQueue = new Dictionary<int, Floor>();
-			Riders = new ConcurrentBag<Rider>();
+			_callQueue = new Queue<Floor>();
+			_destinationQueue = new Queue<Floor>();
+			_mainQueue = new Queue<Floor>();
+			CurrentFloor = Floor.Ground;
 		}
-
 
 		public Direction CurrentDirection { get; set; }
 
-		public Floor CurrentDestination { get; set; }
-
-
 		public Floor CurrentFloor { get; set; }
 
-		public ConcurrentBag<Rider> Riders { get; set; }
-
-		public Floor GetIdleFloor()
+		public void AddCall(Floor floor)
 		{
-			return Riders.Count > 0 ? Floor.Six : Floor.Ground;
+			_callQueue.Enqueue(floor);
 		}
 
-		public void Enqueue(Floor floor)
+		public void AddDestination(Floor floor)
 		{
-			// So what is happening here?
-
-			if (!_floorQueue.Any())
-			{
-				_floorQueue.Add(1, floor);
-			}
+			_destinationQueue.Enqueue(floor);
 		}
 
 		public void MoveToNextFloor()
 		{
-
+			if (CurrentDirection == Direction.None)
+			{
+				if (_callQueue.Any())
+				{
+					_callQueue.OrderBy(c => c);
+					var firstFloor = _callQueue.First();
+					CurrentDirection = CurrentFloor > firstFloor ? Direction.Down : Direction.Up;
+				}
+			}
+			
+			_mainQueue = _callQueue.OrganiseQueue(_destinationQueue, CurrentFloor, CurrentDirection);
+			var anyToRemove = _mainQueue.Any(q => q == CurrentFloor);
+			if (anyToRemove)
+			{
+				while (_mainQueue.Any(q => q == CurrentFloor))
+				{
+					_mainQueue.Dequeue();
+				}
+			}
+			
 			switch (CurrentDirection)
 			{
 				case Direction.Up:
-					CurrentFloor -= 1;
-					break;
+					{
+						var anyCallsAbove = _mainQueue.Any(m => m > CurrentFloor);
+						if (!anyCallsAbove || CurrentFloor == Floor.Twelve)
+						{
+							CurrentDirection = Direction.Down;
+						}
+						else
+						{
+							CurrentFloor += 1;
+						}
+
+						break;
+					}
 				case Direction.Down:
-					CurrentFloor += 1;
-					break;
+					{
+						var anyCallsBelow = _mainQueue.Any(m => m < CurrentFloor);
+						if (!anyCallsBelow || CurrentFloor == Floor.Ground)
+						{
+							CurrentDirection = Direction.Up;
+						}
+						else
+						{
+							CurrentFloor -= 1;
+						}
+
+						break;
+					}
 				default:
-					CurrentFloor = CurrentFloor;
-					break;
+					{
+						//var anyCallsAbove = _mainQueue.Any(m => m > CurrentFloor);
+						//var anyCallsBelow = _mainQueue.Any(m => m < CurrentFloor);
+						//if (anyCallsAbove)
+						//{
+						//	CurrentDirection = Direction.Up;
+						//}
+						//else
+						//{
+						//	if (anyCallsBelow)
+						//	{
+						//		CurrentDirection = Direction.Down;
+						//	}
+						//}
+						CurrentFloor = CurrentFloor;
+						break;
+					}
 			}
 		}
 	}

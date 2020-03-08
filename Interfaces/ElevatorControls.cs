@@ -26,21 +26,13 @@ namespace Interfaces
 			if (_elevatorStatus.CurrentFloor < floor && (_elevatorStatus.CurrentDirection == Direction.Up || _elevatorStatus.CurrentDirection == Direction.None))
 			{
 				// The lift is below the requested floor and the lift is moving up, or idle.
-				_elevatorStatus.Enqueue(floor);
+				_elevatorStatus.AddCall(floor);
 			}
 		}
 
 		public void SelectDestination(Floor floor)
 		{
-			// The person who has just got on, is setting their required destination.
-			// Where is this stored?
-			_elevatorStatus.Riders.Add(new Rider
-			{
-				RiderNumber = _elevatorStatus.Riders.Count + 1,
-				DestinationFloor = floor,
-				StartFloor = _elevatorStatus.CurrentFloor,
-				IsFinished = false
-			});
+			_elevatorStatus.AddDestination(floor);
 		}
 
 		private async Task MoveElevator()
